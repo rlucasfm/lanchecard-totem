@@ -1,2 +1,1 @@
-"# totem-lanchecard" 
-"# lanchecard-totem" 
+App REACT NATIVE para aplicação em Totem de Vendas autonomas para o sistema Lanchecard
