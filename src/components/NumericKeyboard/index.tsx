@@ -5,9 +5,13 @@ import DeleteButton from './DeleteButton';
 
 interface NumericKeyboardProps {
   handleKeyPressed: (pressed: any) => any;
+  deleteKeyPressed: () => void;
 }
 
-export default function ({handleKeyPressed}: NumericKeyboardProps) {
+export default function ({
+  handleKeyPressed,
+  deleteKeyPressed,
+}: NumericKeyboardProps) {
   const handleKey = (pressed: any) => {
     handleKeyPressed(pressed);
   };
@@ -18,7 +22,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(1);
+              handleKey('1');
             }}>
             1
           </KeyButton>
@@ -26,7 +30,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(2);
+              handleKey('2');
             }}>
             2
           </KeyButton>
@@ -34,7 +38,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(3);
+              handleKey('3');
             }}>
             3
           </KeyButton>
@@ -44,7 +48,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(4);
+              handleKey('4');
             }}>
             4
           </KeyButton>
@@ -52,7 +56,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(5);
+              handleKey('5');
             }}>
             5
           </KeyButton>
@@ -60,7 +64,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(6);
+              handleKey('6');
             }}>
             6
           </KeyButton>
@@ -70,7 +74,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(7);
+              handleKey('7');
             }}>
             7
           </KeyButton>
@@ -78,7 +82,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(8);
+              handleKey('8');
             }}>
             8
           </KeyButton>
@@ -86,7 +90,7 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(9);
+              handleKey('9');
             }}>
             9
           </KeyButton>
@@ -97,17 +101,13 @@ export default function ({handleKeyPressed}: NumericKeyboardProps) {
         <View style={styles.column}>
           <KeyButton
             onPress={() => {
-              handleKey(0);
+              handleKey('0');
             }}>
             0
           </KeyButton>
         </View>
         <View style={styles.column}>
-          <DeleteButton
-            onPress={() => {
-              console.log('delete');
-            }}
-          />
+          <DeleteButton onPress={deleteKeyPressed} />
         </View>
       </View>
     </View>

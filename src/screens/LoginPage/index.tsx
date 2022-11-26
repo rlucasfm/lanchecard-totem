@@ -1,31 +1,56 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import LoginFormCard from '../../components/LoginFormCard';
 import NumericKeyboard from '../../components/NumericKeyboard';
 
 export default function () {
-  const [pressedKey, setPressedKey] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordActive, setPasswordActive] = useState(false);
+
+  const handleDelete = () => {
+    if (!passwordActive) {
+      setUsername(prev => prev.slice(0, -1));
+    } else {
+      setPassword(prev => prev.slice(0, -1));
+    }
+  };
+
+  const handleInsert = (key: any) => {
+    if (passwordActive) {
+      setPassword(prev => prev + key);
+    } else {
+      setUsername(prev => prev + key);
+    }
+  };
 
   return (
     <View style={styles.view}>
       <View style={styles.container_title}>
         <View style={styles.rows}>
-          <Text> Logo lanchecard</Text>
-          <Text> Texto 2</Text>
+          <Image source={require('../../assets/images/Lanchecard-Logo.png')} />
+          <Text style={styles.subtitle}>
+            Olá! Insira seus dados para continuar:
+          </Text>
         </View>
       </View>
       <View style={styles.container}>
         <View style={styles.column}>
           <View style={styles.card}>
-            <LoginFormCard insertedKey={pressedKey} />
+            <LoginFormCard
+              username={username}
+              password={password}
+              setPasswordActive={setPasswordActive}
+            />
           </View>
         </View>
         <View style={styles.column}>
           <View style={styles.card}>
             <NumericKeyboard
               handleKeyPressed={pressed => {
-                setPressedKey(pressed);
+                handleInsert(pressed);
               }}
+              deleteKeyPressed={handleDelete}
             />
           </View>
         </View>
@@ -54,7 +79,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#fff',
-    maxHeight: 150,
+    maxHeight: 140,
+    marginLeft: 10,
   },
   column: {
     width: '50%',
@@ -64,9 +90,17 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     elevation: 2,
-    margin: 30,
+    marginTop: 10,
+    marginBottom: 50,
   },
   rows: {
     flexDirection: 'column',
+  },
+  subtitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#347393',
+    marginTop: 22,
+    marginLeft: 10,
   },
 });

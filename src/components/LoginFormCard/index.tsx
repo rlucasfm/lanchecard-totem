@@ -1,32 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import SendButton from './SendButton';
 
 interface LoginFormCardProps {
-  insertedKey: any;
+  username: string;
+  password: string;
+  setPasswordActive: (val: boolean) => void;
 }
 
-export default function ({insertedKey}: LoginFormCardProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordActive, setPasswordActive] = useState(false);
-
+export default function ({
+  username,
+  password,
+  setPasswordActive,
+}: LoginFormCardProps) {
   const handleSend = (pressed: any) => {
     console.log(pressed);
   };
-
-  useEffect(() => {
-    if (!passwordActive) {
-      setUsername(prev => {
-        return prev + insertedKey;
-      });
-    } else {
-      setPassword(prev => {
-        return prev + insertedKey;
-      });
-    }
-  }, [insertedKey, passwordActive]);
 
   return (
     <View style={styles.container}>
@@ -59,6 +49,7 @@ export default function ({insertedKey}: LoginFormCardProps) {
             onPressIn={() => {
               setPasswordActive(true);
             }}
+            secureTextEntry={true}
           />
         </View>
       </View>
@@ -95,6 +86,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
+    height: 77,
     marginBottom: 30,
   },
   btn: {
