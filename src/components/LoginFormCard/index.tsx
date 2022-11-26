@@ -7,17 +7,17 @@ interface LoginFormCardProps {
   username: string;
   password: string;
   setPasswordActive: (val: boolean) => void;
+  errorStatus: boolean;
+  handleSend: () => void;
 }
 
 export default function ({
   username,
   password,
   setPasswordActive,
+  errorStatus,
+  handleSend,
 }: LoginFormCardProps) {
-  const handleSend = (pressed: any) => {
-    console.log(pressed);
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.columns}>
@@ -28,7 +28,7 @@ export default function ({
             style={styles.input}
             mode="outlined"
             value={username}
-            error={false}
+            error={errorStatus}
             showSoftInputOnFocus={false}
             onPressIn={() => {
               setPasswordActive(false);
@@ -44,7 +44,7 @@ export default function ({
             style={styles.input}
             mode="outlined"
             value={password}
-            error={false}
+            error={errorStatus}
             showSoftInputOnFocus={false}
             onPressIn={() => {
               setPasswordActive(true);

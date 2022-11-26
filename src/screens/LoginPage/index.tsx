@@ -2,11 +2,35 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import LoginFormCard from '../../components/LoginFormCard';
 import NumericKeyboard from '../../components/NumericKeyboard';
+import http from '../../http-common';
+import {IUserData} from './../../typings/Login';
+import {useNavigation} from '@react-navigation/native';
 
 export default function () {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordActive, setPasswordActive] = useState(false);
+  const [errorStatus, setErrorStatus] = useState(false);
+  const navigation = useNavigation();
+
+  const handleSend = () => {
+    http
+      .get<IUserData[]>('/users')
+      .then((response: any) => {
+        const user_data = response.data[0];
+        if (
+          user_data.username === username &&
+          user_data.password === password
+        ) {
+          navigation.navigate('ProductList');
+        } else {
+          setErrorStatus(true);
+        }
+      })
+      .catch(() => {
+        setErrorStatus(true);
+      });
+  };
 
   const handleDelete = () => {
     if (!passwordActive) {
@@ -41,6 +65,8 @@ export default function () {
               username={username}
               password={password}
               setPasswordActive={setPasswordActive}
+              errorStatus={errorStatus}
+              handleSend={handleSend}
             />
           </View>
         </View>
