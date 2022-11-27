@@ -1,6 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Container, Row, Col} from '../../components/Layout';
+import ProductListCard from '../../components/ProductListCard';
 
 export default function () {
   return (
@@ -26,9 +27,9 @@ export default function () {
           </Col>
         </View>
       </Row>
-      <Row>
+      <Row style={{height: '80%'}}>
         <Col numRows={4}>
-          <Text>Lista de produtos</Text>
+          <ProductListCard />
         </Col>
         <Col numRows={6}>
           <Text>Menu de produtos</Text>

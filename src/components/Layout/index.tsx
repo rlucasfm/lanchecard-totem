@@ -1,15 +1,31 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
-export const Container = ({style, children}) => (
+interface ContainerProps {
+  style?: any;
+  children: any;
+}
+
+export const Container = ({style, children}: ContainerProps) => (
   <View style={[styles.container, style]}>{children}</View>
 );
 
-export const Row = ({style = null, children}) => (
+interface RowProps {
+  style?: any;
+  children: React.ReactNode;
+}
+
+export const Row = ({style, children}: RowProps) => (
   <View style={[styles.row, style]}>{children}</View>
 );
 
-export const Col = ({numRows = 1, style = null, children}) => (
+interface ColProps {
+  numRows?: number;
+  style?: any;
+  children?: React.ReactNode;
+}
+
+export const Col = ({numRows = 12, style, children}: ColProps) => (
   <View style={[styles[`${numRows}col`], style]}>{children}</View>
 );
 
