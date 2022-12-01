@@ -22,7 +22,7 @@ export default function () {
           user_data.username === username &&
           user_data.password === password
         ) {
-          navigation.navigate('ProductList');
+          navigation.navigate('ProductPage');
         } else {
           setErrorStatus(true);
         }
