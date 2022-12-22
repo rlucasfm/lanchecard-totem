@@ -1,15 +1,31 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import FinalizeButton from '../../components/Buttons/FinalizeButton';
 import {Container, Row, Col} from '../../components/Layout';
 import ProductListCard from '../../components/ProductListCard';
 import QuitButton from '../../components/Buttons/QuitButton';
 import ProductMenu from '../../components/ProductMenu';
+import UserData from '../../utils/data/UserData';
+import {ICategories} from '../../typings/Categories';
+import http from '../../http-common';
 
 export default function () {
   const [finalizeEnabled, setFinalizeEnabled] = useState(false);
   const navigation = useNavigation();
+  const userData = UserData.getUserData();
+  const [categories, setCategories] = useState(null);
+
+  useEffect(() => {
+    http
+      .get<ICategories[]>('/categoria?idEstabelecimento=' + 3)
+      .then((response: any) => {
+        setCategories(response.data);
+      })
+      .catch(() => {
+        setCategories(null);
+      });
+  }, []);
 
   const handleFinalize = (pressed: any) => {
     console.log(pressed);
@@ -68,13 +84,13 @@ export default function () {
           <Col numRows={4}>
             <View style={styles.textcont}>
               <Text style={[styles.text1]}>Olá, </Text>
-              <Text style={styles.text2}>João Felipe</Text>
+              <Text style={styles.text2}>{userData.nomeCliente}</Text>
             </View>
           </Col>
           <Col numRows={4}>
             <View style={styles.textcont}>
               <Text style={[styles.text1]}>Saldo: </Text>
-              <Text style={styles.text2}>R$ 120,00</Text>
+              <Text style={styles.text2}>R$ {userData.saldoCartao}</Text>
             </View>
           </Col>
         </View>
@@ -102,7 +118,7 @@ export default function () {
           </View>
         </Col>
         <Col numRows={6}>
-          <ProductMenu />
+          {categories ? <ProductMenu tabs={categories} /> : null}
         </Col>
       </Row>
     </Container>

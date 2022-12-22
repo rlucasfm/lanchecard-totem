@@ -5,6 +5,7 @@ import NumericKeyboard from '../../components/NumericKeyboard';
 import http from '../../http-common';
 import {IUserData} from './../../typings/Login';
 import {useNavigation} from '@react-navigation/native';
+import UserData from '../../utils/data/UserData';
 
 export default function () {
   const [username, setUsername] = useState('');
@@ -15,13 +16,14 @@ export default function () {
 
   const handleSend = () => {
     http
-      .get<IUserData[]>('/users')
+      .post<IUserData[]>('/cliente/login', {
+        NrCartaoMatricula: username,
+        senha: password,
+      })
       .then((response: any) => {
-        const user_data = response.data[0];
-        if (
-          user_data.username === username &&
-          user_data.password === password
-        ) {
+        const res = response.data;
+        if (res.statusLogin) {
+          UserData.setUserData(res.dadosCliente);
           navigation.navigate('ProductPage');
         } else {
           setErrorStatus(true);

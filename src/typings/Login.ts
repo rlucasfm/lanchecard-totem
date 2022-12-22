@@ -1,4 +1,15 @@
 export interface IUserData {
-  username: string;
-  password: string;
+  statusLogin: boolean;
+  msg: string;
+  dadosCliente: {
+    idCliente: number;
+    nomeCliente: string;
+    nrCartao: number;
+    saldoCartao: string;
+    contaPosPago: number;
+    limitePosPago: string;
+    limiteDiario: string;
+    consumoDiario: number;
+    produtosBloqueado: string;
+  };
 }

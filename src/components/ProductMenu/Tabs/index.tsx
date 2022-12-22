@@ -78,7 +78,7 @@ export default function ({tabList, onChangeTab}: TabsProps) {
                   styles.tab_text,
                   selectedTab === obj ? styles.selected_text : null,
                 ]}>
-                {obj}
+                {obj.nomeCategoria}
               </Text>
             </TouchableOpacity>
           </Col>
