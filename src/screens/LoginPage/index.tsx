@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import LoginFormCard from '../../components/LoginFormCard';
 import NumericKeyboard from '../../components/NumericKeyboard';
 import http from '../../http-common';
-import {IUserData} from './../../typings/Login';
+import {IUserData} from './../../typings/index';
 import {useNavigation} from '@react-navigation/native';
 import UserData from '../../utils/data/UserData';
 

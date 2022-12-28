@@ -1,5 +1,5 @@
 import http from '../../../http-common';
-import {ICategories} from '../../../typings/Categories';
+import {ICategories} from '../../../typings/index';
 import {useState} from 'react';
 
 export function useCategorias(idEstabelecimento: number): Array<any> {

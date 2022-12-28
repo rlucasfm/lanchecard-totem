@@ -8,7 +8,11 @@ import QuitButton from '../../components/Buttons/QuitButton';
 import ProductMenu from '../../components/ProductMenu';
 import UserData from '../../utils/data/UserData';
 import SessionData from '../../utils/data/SessionData';
-import {ICategories} from '../../typings/Categories';
+import {
+  ICategories,
+  IProductByCategory,
+  IProductList,
+} from '../../typings/index';
 import http from '../../http-common';
 
 export default function () {
@@ -17,6 +21,7 @@ export default function () {
   const userData = UserData.getUserData();
   const sessionData = SessionData.getSessionData();
   const [categories, setCategories] = useState(null);
+  const [productCart, setProductCart] = useState<IProductList[]>([]);
 
   useEffect(() => {
     http
@@ -43,38 +48,39 @@ export default function () {
     navigation.navigate('LoginPage');
   };
 
-  const productData = [
-    {
-      name: 'Produto 1',
-      valor: 4027.23,
-      qnt: 3,
-    },
-    {
-      name: 'Produto 2',
-      valor: 4.5,
-      qnt: 3,
-    },
-    {
-      name: 'Produto 3',
-      valor: 4.5,
-      qnt: 3,
-    },
-    {
-      name: 'Produto 4',
-      valor: 4.5,
-      qnt: 3,
-    },
-    {
-      name: 'Produto 5',
-      valor: 4.5,
-      qnt: 3,
-    },
-    {
-      name: 'Produto 6',
-      valor: 4.5,
-      qnt: 3,
-    },
-  ];
+  const handleAddItem = (item: IProductByCategory) => {
+    const cart_copy = [...productCart];
+    const product_same_id = cart_copy.find(
+      (element: IProductList) => element.idProduto === item.idProduto,
+    );
+    if (product_same_id !== undefined) {
+      const prod_index = cart_copy.findIndex(
+        element => element === product_same_id,
+      );
+      cart_copy[prod_index].quantity += 1;
+      setProductCart(cart_copy);
+    } else {
+      setProductCart(oldCart => [...oldCart, {...item, quantity: 1}]);
+    }
+  };
+
+  const handleOnPlus = (item: IProductList) => {
+    const cart_copy = [...productCart];
+    const prod_index = cart_copy.findIndex(element => element === item);
+    cart_copy[prod_index].quantity += 1;
+    setProductCart(cart_copy);
+  };
+
+  const handleOnLess = (item: IProductList) => {
+    const cart_copy = [...productCart];
+    const prod_index = cart_copy.findIndex(element => element === item);
+    if (cart_copy[prod_index].quantity > 1) {
+      cart_copy[prod_index].quantity -= 1;
+    } else {
+      cart_copy.splice(prod_index, 1);
+    }
+    setProductCart(cart_copy);
+  };
 
   return (
     <Container style={styles.container}>
@@ -103,7 +109,9 @@ export default function () {
         <Col numRows={4}>
           <ProductListCard
             productSelected={handleFinalizeEnable}
-            productList={productData}
+            productList={productCart}
+            onLess={handleOnLess}
+            onPlus={handleOnPlus}
           />
           <View style={styles.button_section}>
             <Row style={{marginBottom: 15}}>
@@ -122,7 +130,9 @@ export default function () {
           </View>
         </Col>
         <Col numRows={6}>
-          {categories ? <ProductMenu tabs={categories} /> : null}
+          {categories ? (
+            <ProductMenu tabs={categories} addItem={handleAddItem} />
+          ) : null}
         </Col>
       </Row>
     </Container>

@@ -1,32 +1,48 @@
-import React from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList} from 'react-native';
+import {ICategories, IProductByCategory} from '../../../typings';
 import MenuItem from './MenuItem';
+import http from '../../../http-common';
+import SessionData from '../../../utils/data/SessionData';
 
-const DATA = [
-  'item 1',
-  'item 2',
-  'item 3',
-  'item 4',
-  'item 5',
-  'item 6',
-  'item 7',
-  'item 8',
-  'item 9',
-  'item 10',
-  'item 11',
-  'item 12',
-  'item 13',
-  'item 14',
-  'item 15',
-  'item 16',
-  'item 17',
-  'item 18',
-  'item 19',
-  'item 20',
-];
-
-export default function () {
-  return <FlatList data={DATA} numColumns={5} renderItem={MenuItem} />;
+interface MenuListProps {
+  selectedTab: ICategories;
+  addItem: (item: IProductByCategory) => any;
 }
 
-const styles = StyleSheet.create({});
+export default function ({selectedTab, addItem}: MenuListProps) {
+  const [products, setProducts] = useState(null);
+  const sessionData = SessionData.getSessionData();
+
+  useEffect(() => {
+    http
+      .get<ICategories[]>(
+        `/produto?idEstabelecimento=${sessionData.idEstabelecimento}&idCategoria=${selectedTab.idCategoria}`,
+      )
+      .then((response: any) => {
+        setProducts(response.data);
+      })
+      .catch(() => {
+        setProducts(null);
+      });
+  }, [selectedTab.idCategoria, sessionData.idEstabelecimento]);
+
+  const handleClickItem = (item: IProductByCategory) => {
+    addItem(item);
+  };
+
+  return (
+    <FlatList
+      data={products}
+      numColumns={5}
+      renderItem={({item}) => (
+        <MenuItem
+          item={item}
+          onClickItem={() => {
+            handleClickItem(item);
+          }}
+        />
+      )}
+    />
+  );
+}

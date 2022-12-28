@@ -1,30 +1,30 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
+import {IProductByCategory} from '../../../../typings';
+import padToCurrency from '../../../../utils/padToCurrency';
 import {Col, Row} from '../../../Layout';
 
 interface MenuItemProps {
-  item: string;
+  item: IProductByCategory;
+  onClickItem: () => any;
 }
 
-export default function ({item}: MenuItemProps) {
+export default function ({item, onClickItem}: MenuItemProps) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onTouchEnd={onClickItem}>
       <Row>
         <Col>
-          <Image
-            style={styles.img_box}
-            source={require('../../../../assets/images/food-1.png')}
-          />
+          <Image style={styles.img_box} source={{uri: item.imagem}} />
         </Col>
       </Row>
       <Row>
         <Col>
-          <Text style={styles.text}>{item}</Text>
+          <Text style={styles.text}>{item.nomeProduto}</Text>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Text style={styles.text}>R$: 9,90</Text>
+          <Text style={styles.text}>R$: {padToCurrency(item.valorVenda)}</Text>
         </Col>
       </Row>
     </View>

@@ -10,6 +10,8 @@ interface ProductItemProps {
   valor: number;
   qnt: number;
   indexParity?: number;
+  onPlus: () => any;
+  onLess: () => any;
 }
 
 export default function ({
@@ -17,19 +19,9 @@ export default function ({
   valor,
   qnt,
   indexParity = 0,
+  onPlus,
+  onLess,
 }: ProductItemProps) {
-  const minusQnt = () => {
-    console.log('minus');
-  };
-
-  const plusQnt = () => {
-    console.log('plus');
-  };
-
-  const handleDelete = () => {
-    console.log('delete');
-  };
-
   return (
     <Row
       style={[
@@ -57,15 +49,15 @@ export default function ({
             size={20}
             color={'#FF0000'}
             style={styles.deleteIcon}
-            onPress={handleDelete}
+            onPress={onLess}
           />
         ) : (
-          <TouchableOpacity style={[styles.qntButton]} onPress={minusQnt}>
+          <TouchableOpacity style={[styles.qntButton]} onPress={onLess}>
             <Text>-</Text>
           </TouchableOpacity>
         )}
         <Text style={[styles.qntText]}>{qnt}</Text>
-        <TouchableOpacity style={[styles.qntButton]} onPress={plusQnt}>
+        <TouchableOpacity style={[styles.qntButton]} onPress={onPlus}>
           <Text>+</Text>
         </TouchableOpacity>
       </Col>

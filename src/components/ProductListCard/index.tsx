@@ -4,17 +4,31 @@ import {Text, StyleSheet, View, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Col, Container, Row} from './../Layout/index';
 import ProductItem from './ProductItem';
+import {IProductList} from './../../typings/index';
+import padToCurrency from '../../utils/padToCurrency';
 
 interface ProductListCardsProps {
   productSelected: (selected: boolean) => void;
-  productList: Array<any>;
+  productList: Array<IProductList>;
+  onPlus: (item: IProductList) => any;
+  onLess: (item: IProductList) => any;
 }
 
 export default function ({
   productSelected,
   productList,
+  onPlus,
+  onLess,
 }: ProductListCardsProps) {
   productSelected(false);
+
+  const calculateSum = () => {
+    let value = 0;
+    productList.forEach((item: IProductList) => {
+      value += item.quantity * item.valorVenda;
+    });
+    return value;
+  };
 
   return (
     <View style={styles.bg}>
@@ -29,7 +43,9 @@ export default function ({
           </Col>
           <Col style={[styles.rowFlex, styles.contentOnStart]}>
             <Text style={[styles.textBase]}>Total </Text>
-            <Text style={[styles.textBase, styles.boldText]}>R$ 00,00</Text>
+            <Text style={[styles.textBase, styles.boldText]}>
+              R$ {padToCurrency(calculateSum())}
+            </Text>
           </Col>
         </Row>
         <Row style={styles.internalList}>
@@ -52,10 +68,12 @@ export default function ({
               {productList.map((obj, i) => (
                 <ProductItem
                   key={i}
-                  nome={obj.name}
-                  valor={obj.valor}
-                  qnt={obj.qnt}
+                  nome={obj.nomeProduto}
+                  valor={obj.valorVenda}
+                  qnt={obj.quantity}
                   indexParity={Math.abs(i % 2)}
+                  onPlus={() => onPlus(obj)}
+                  onLess={() => onLess(obj)}
                 />
               ))}
             </ScrollView>
