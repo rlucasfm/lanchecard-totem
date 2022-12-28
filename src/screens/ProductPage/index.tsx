@@ -7,6 +7,7 @@ import ProductListCard from '../../components/ProductListCard';
 import QuitButton from '../../components/Buttons/QuitButton';
 import ProductMenu from '../../components/ProductMenu';
 import UserData from '../../utils/data/UserData';
+import SessionData from '../../utils/data/SessionData';
 import {ICategories} from '../../typings/Categories';
 import http from '../../http-common';
 
@@ -14,18 +15,21 @@ export default function () {
   const [finalizeEnabled, setFinalizeEnabled] = useState(false);
   const navigation = useNavigation();
   const userData = UserData.getUserData();
+  const sessionData = SessionData.getSessionData();
   const [categories, setCategories] = useState(null);
 
   useEffect(() => {
     http
-      .get<ICategories[]>('/categoria?idEstabelecimento=' + 3)
+      .get<ICategories[]>(
+        '/categoria?idEstabelecimento=' + sessionData.idEstabelecimento,
+      )
       .then((response: any) => {
         setCategories(response.data);
       })
       .catch(() => {
         setCategories(null);
       });
-  }, []);
+  }, [sessionData.idEstabelecimento]);
 
   const handleFinalize = (pressed: any) => {
     console.log(pressed);

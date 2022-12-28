@@ -1,4 +1,8 @@
-let session = {};
+import {ISessionData} from './ISessionData';
+
+let session: ISessionData = {
+  idEstabelecimento: 3,
+};
 
 export default {
   setSessionData(sessionData: any) {
