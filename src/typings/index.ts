@@ -3,6 +3,13 @@ export interface ICategories {
   nomeCategoria: string;
 }
 
+export interface IBranches {
+  idEstabelecimento: number;
+  nomeEstabelecimento: string;
+  horaEntrega: string;
+  cashback: boolean;
+}
+
 export interface IUserData {
   statusLogin: boolean;
   msg: string;
