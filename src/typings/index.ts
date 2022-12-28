@@ -45,3 +45,20 @@ export interface IProductByCategory {
 export interface IProductList extends IProductByCategory {
   quantity: number;
 }
+
+export interface IBuying {
+  idCliente: number;
+  senha: string;
+  idEstabelecimento: number;
+  horaRetirada: string;
+  tipoCompra: string;
+  valorPedido: number;
+  valorDesconto: number;
+  valorTotal: number;
+  produto: IProductSimple[];
+}
+
+export interface IProductSimple {
+  idProduto: number;
+  qtd: number;
+}

@@ -8,20 +8,12 @@ import {IProductList} from './../../typings/index';
 import padToCurrency from '../../utils/padToCurrency';
 
 interface ProductListCardsProps {
-  productSelected: (selected: boolean) => void;
   productList: Array<IProductList>;
   onPlus: (item: IProductList) => any;
   onLess: (item: IProductList) => any;
 }
 
-export default function ({
-  productSelected,
-  productList,
-  onPlus,
-  onLess,
-}: ProductListCardsProps) {
-  productSelected(false);
-
+export default function ({productList, onPlus, onLess}: ProductListCardsProps) {
   const calculateSum = () => {
     let value = 0;
     productList.forEach((item: IProductList) => {

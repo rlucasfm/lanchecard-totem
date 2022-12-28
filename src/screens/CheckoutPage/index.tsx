@@ -6,14 +6,20 @@ import SelectButton from '../../components/Buttons/SelectButton';
 import NumericKeyboard from '../../components/NumericKeyboard';
 import PasswordFormCard from '../../components/PasswordFormCard';
 import http from '../../http-common';
-import {IUserData} from '../../typings/Login';
 import {useNavigation} from '@react-navigation/native';
+import ShoppingCart from '../../utils/data/ShoppingCart'
+import UserData from '../../utils/data/UserData';
+import {IBuying} from './../../typings/index';
+import SessionData from '../../utils/data/SessionData';
 
 export default function () {
   const [selectedBtn, setSelectedBtn] = useState(1);
   const [password, setPassword] = useState('');
   const [errorStatus, setErrorStatus] = useState(false);
   const navigation = useNavigation();
+  const shopping_cart = ShoppingCart.getShoppingCart();
+  const userData = UserData.getUserData();
+  const sessionData = SessionData.getSessionData();
 
   const handleRetrieve = (btnIndex: number) => {
     setSelectedBtn(btnIndex);
@@ -28,15 +34,25 @@ export default function () {
   };
 
   const handleSend = () => {
+    const horaRetirada =
+      selectedBtn === 1
+        ? 'Imediata'
+        : selectedBtn === 2
+        ? 'Intervalo (Manhã)'
+        : 'Intervalo (Tarde)';
+
+    const payload = ShoppingCart.buyingInterface(
+      shopping_cart,
+      userData,
+      password,
+      sessionData.idEstabelecimento,
+      horaRetirada,
+    );
+
     http
-      .get<IUserData[]>('/users')
-      .then((response: any) => {
-        const user_data = response.data[0];
-        if (user_data.username === '123' && user_data.password === password) {
-          navigation.navigate('ProductPage');
-        } else {
-          setErrorStatus(true);
-        }
+      .post<IBuying>('/pedido/comprar', payload)
+      .then(() => {
+        navigation.navigate('CompletePage');
       })
       .catch(() => {
         setErrorStatus(true);

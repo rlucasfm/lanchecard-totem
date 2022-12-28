@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Modal, StyleSheet, Text, View} from 'react-native';
 import FinalizeButton from '../../components/Buttons/FinalizeButton';
 import {Container, Row, Col} from '../../components/Layout';
 import ProductListCard from '../../components/ProductListCard';
@@ -8,12 +8,15 @@ import QuitButton from '../../components/Buttons/QuitButton';
 import ProductMenu from '../../components/ProductMenu';
 import UserData from '../../utils/data/UserData';
 import SessionData from '../../utils/data/SessionData';
+import ShoppingCart from '../../utils/data/ShoppingCart';
 import {
   ICategories,
   IProductByCategory,
   IProductList,
 } from '../../typings/index';
 import http from '../../http-common';
+import padToCurrency from '../../utils/padToCurrency';
+import ModalInsuficient from '../../components/ModalInsuficient';
 
 export default function () {
   const [finalizeEnabled, setFinalizeEnabled] = useState(false);
@@ -22,6 +25,7 @@ export default function () {
   const sessionData = SessionData.getSessionData();
   const [categories, setCategories] = useState(null);
   const [productCart, setProductCart] = useState<IProductList[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     http
@@ -36,12 +40,28 @@ export default function () {
       });
   }, [sessionData.idEstabelecimento]);
 
-  const handleFinalize = (pressed: any) => {
-    console.log(pressed);
-  };
+  useEffect(() => {
+    if (productCart.length > 0) {
+      console.log('effect true', productCart.length);
+      setFinalizeEnabled(true);
+    } else {
+      console.log('effect false', productCart.length);
+      setFinalizeEnabled(false);
+    }
+  }, [productCart.length]);
 
-  const handleFinalizeEnable = (selected: boolean) => {
-    setFinalizeEnabled(selected);
+  const handleFinalize = () => {
+    let totalValue = 0;
+    productCart.forEach((item: IProductList) => {
+      totalValue += item.quantity * item.valorVenda;
+    });
+
+    if (totalValue > parseFloat(userData.saldoCartao)) {
+      setModalVisible(true);
+    } else {
+      ShoppingCart.setShoppingCart(productCart);
+      navigation.navigate('CheckoutPage');
+    }
   };
 
   const handleQuit = () => {
@@ -82,8 +102,19 @@ export default function () {
     setProductCart(cart_copy);
   };
 
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <Container style={styles.container}>
+      <Modal
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <ModalInsuficient onClose={handleCloseModal}/>
+      </Modal>
       <Row>
         <View style={styles.titlerow}>
           <Col numRows={4}>
@@ -100,7 +131,9 @@ export default function () {
           <Col numRows={4}>
             <View style={styles.textcont}>
               <Text style={[styles.text1]}>Saldo: </Text>
-              <Text style={styles.text2}>R$ {userData.saldoCartao}</Text>
+              <Text style={styles.text2}>
+                R$ {padToCurrency(parseFloat(userData.saldoCartao))}
+              </Text>
             </View>
           </Col>
         </View>
@@ -108,7 +141,6 @@ export default function () {
       <Row style={{height: '85%'}}>
         <Col numRows={4}>
           <ProductListCard
-            productSelected={handleFinalizeEnable}
             productList={productCart}
             onLess={handleOnLess}
             onPlus={handleOnPlus}
