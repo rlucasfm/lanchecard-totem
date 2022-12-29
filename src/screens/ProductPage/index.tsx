@@ -42,10 +42,8 @@ export default function () {
 
   useEffect(() => {
     if (productCart.length > 0) {
-      console.log('effect true', productCart.length);
       setFinalizeEnabled(true);
     } else {
-      console.log('effect false', productCart.length);
       setFinalizeEnabled(false);
     }
   }, [productCart.length]);
