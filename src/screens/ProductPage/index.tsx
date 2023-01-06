@@ -16,7 +16,7 @@ import {
 } from '../../typings/index';
 import http from '../../http-common';
 import padToCurrency from '../../utils/padToCurrency';
-import ModalInsuficient from '../../components/ModalInsuficient';
+import ModalBase from '../../components/ModalBase';
 
 export default function () {
   const [finalizeEnabled, setFinalizeEnabled] = useState(false);
@@ -111,7 +111,14 @@ export default function () {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-        <ModalInsuficient onClose={handleCloseModal}/>
+        <ModalBase
+          onClose={handleCloseModal}
+          title={'Saldo insuficiente para compra'}
+          text={
+            'Procure a cantina ou a pessoa responsável para recarregar o cartão.'
+          }
+          closeBtnText={'Voltar'}
+        />
       </Modal>
       <Row>
         <View style={styles.titlerow}>

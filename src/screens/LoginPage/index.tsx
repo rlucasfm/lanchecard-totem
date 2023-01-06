@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, Image, Modal} from 'react-native';
 import LoginFormCard from '../../components/LoginFormCard';
 import NumericKeyboard from '../../components/NumericKeyboard';
 import http from '../../http-common';
 import {IUserData} from './../../typings/index';
 import {useNavigation} from '@react-navigation/native';
 import UserData from '../../utils/data/UserData';
+import ModalBase from '../../components/ModalBase';
 
 export default function () {
   const [username, setUsername] = useState('');
@@ -13,6 +14,13 @@ export default function () {
   const [passwordActive, setPasswordActive] = useState(false);
   const [errorStatus, setErrorStatus] = useState(false);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (errorStatus) {
+      setModalVisible(true);
+    }
+  }, [errorStatus]);
 
   const handleSend = () => {
     http
@@ -50,8 +58,25 @@ export default function () {
     }
   };
 
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setErrorStatus(false);
+  };
+
   return (
     <View style={styles.view}>
+      <Modal
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <ModalBase
+          onClose={handleCloseModal}
+          title={'Ops! Algo deu errado'}
+          text={'Conta digital não encontrada'}
+          closeBtnText={'Voltar'}
+        />
+      </Modal>
       <View style={styles.container_title}>
         <View style={styles.rows}>
           <Image source={require('../../assets/images/Lanchecard-Logo.png')} />

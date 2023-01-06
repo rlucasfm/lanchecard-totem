@@ -33,6 +33,7 @@ export default function ({
             onPressIn={() => {
               setPasswordActive(false);
             }}
+            autoFocus={true}
           />
         </View>
       </View>
