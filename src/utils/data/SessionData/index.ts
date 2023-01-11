@@ -1,6 +1,6 @@
 import {ISessionData} from './ISessionData';
 
-let session: ISessionData = {
+let session: any = {
   idEstabelecimento: 3,
   token: '14U3zRxs2D49tHj9EAQLVPDVapmhnZd8CsEHesme',
 };

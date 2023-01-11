@@ -28,7 +28,6 @@ export default function () {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    console.log(sessionData);
     http
       .get<ICategories[]>(
         '/categoria?idEstabelecimento=' + sessionData.idEstabelecimento,
@@ -39,7 +38,7 @@ export default function () {
       .catch(() => {
         setCategories(null);
       });
-  }, [sessionData.idEstabelecimento]);
+  }, [sessionData.idEstabelecimento, userData.produtosBloqueado]);
 
   useEffect(() => {
     if (productCart.length > 0) {
@@ -72,7 +71,7 @@ export default function () {
       } else {
         if (
           totalValue + userData.consumoDiario >
-            parseFloat(userData.limiteDiario)+50 &&
+            parseFloat(userData.limiteDiario) + 50 &&
           userData.limiteDiario !== null
         ) {
           setModalVisible(true);

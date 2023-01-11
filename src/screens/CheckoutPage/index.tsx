@@ -7,7 +7,7 @@ import NumericKeyboard from '../../components/NumericKeyboard';
 import PasswordFormCard from '../../components/PasswordFormCard';
 import http from '../../http-common';
 import {useNavigation} from '@react-navigation/native';
-import ShoppingCart from '../../utils/data/ShoppingCart'
+import ShoppingCart from '../../utils/data/ShoppingCart';
 import UserData from '../../utils/data/UserData';
 import {IBuying} from './../../typings/index';
 import SessionData from '../../utils/data/SessionData';
