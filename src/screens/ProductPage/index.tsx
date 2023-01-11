@@ -28,6 +28,7 @@ export default function () {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
+    console.log(sessionData);
     http
       .get<ICategories[]>(
         '/categoria?idEstabelecimento=' + sessionData.idEstabelecimento,
@@ -54,11 +55,32 @@ export default function () {
       totalValue += item.quantity * item.valorVenda;
     });
 
-    if (totalValue > parseFloat(userData.saldoCartao)) {
-      setModalVisible(true);
+    if (userData.contaPosPago === 0) {
+      if (totalValue > parseFloat(userData.saldoCartao)) {
+        setModalVisible(true);
+      } else {
+        ShoppingCart.setShoppingCart(productCart);
+        navigation.navigate('CheckoutPage');
+      }
     } else {
-      ShoppingCart.setShoppingCart(productCart);
-      navigation.navigate('CheckoutPage');
+      if (
+        totalValue >
+        parseFloat(userData.saldoCartao) +
+          Math.abs(parseFloat(userData.limitePosPago))
+      ) {
+        setModalVisible(true);
+      } else {
+        if (
+          totalValue + userData.consumoDiario >
+            parseFloat(userData.limiteDiario)+50 &&
+          userData.limiteDiario !== null
+        ) {
+          setModalVisible(true);
+        } else {
+          ShoppingCart.setShoppingCart(productCart);
+          navigation.navigate('CheckoutPage');
+        }
+      }
     }
   };
 

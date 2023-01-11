@@ -13,7 +13,7 @@ const {Navigator, Screen} = createNativeStackNavigator();
 export default function () {
   return (
     <Navigator
-      initialRouteName="LoginPage"
+      initialRouteName="InitialSettingsPage"
       screenOptions={{headerShown: false}}>
       <Screen name="InitialSettingsPage" component={InitialSettingsPage} />
       <Screen name="LoginPage" component={LoginPage} />

@@ -34,12 +34,13 @@ export default function () {
   };
 
   const handleSend = () => {
-    const horaRetirada =
-      selectedBtn === 1
-        ? 'Imediata'
-        : selectedBtn === 2
-        ? 'Intervalo (Manhã)'
-        : 'Intervalo (Tarde)';
+    const horaRetirada = 'Imediata';
+    // const horaRetirada =
+    //   selectedBtn === 1
+    //     ? 'Imediata'
+    //     : selectedBtn === 2
+    //     ? 'Intervalo (Manhã)'
+    //     : 'Intervalo (Tarde)';
 
     const payload = ShoppingCart.buyingInterface(
       shopping_cart,
@@ -84,6 +85,7 @@ export default function () {
           <Text style={[styles.text2]}>Selecione o momento da retirada:</Text>
         </Row>
         <Row style={{width: '60%', marginTop: 10}}>
+          <Col />
           <Col style={[styles.btnCol]}>
             <SelectButton
               onPress={() => handleRetrieve(1)}
@@ -91,7 +93,8 @@ export default function () {
               IMEDIATO
             </SelectButton>
           </Col>
-          <Col style={[styles.btnCol]}>
+          <Col />
+          {/* <Col style={[styles.btnCol]}>
             <SelectButton
               onPress={() => handleRetrieve(2)}
               isSelected={selectedBtn === 2}>
@@ -104,7 +107,7 @@ export default function () {
               isSelected={selectedBtn === 3}>
               INTERVALO (TARDE)
             </SelectButton>
-          </Col>
+          </Col> */}
         </Row>
       </View>
       <View style={{marginTop: 50}}>

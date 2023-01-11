@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Text, StyleSheet, View, ScrollView} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Col, Container, Row} from './../Layout/index';
 import ProductItem from './ProductItem';
 import {IProductList} from './../../typings/index';
@@ -26,19 +25,14 @@ export default function ({productList, onPlus, onLess}: ProductListCardsProps) {
     <View style={styles.bg}>
       <Container style={styles.container}>
         <Row style={{height: 25}}>
-          <Col style={[styles.rowFlex, styles.contentOnEnd]}>
-            <Text style={[styles.textBase]}>Pedido </Text>
-            <Text style={[styles.textBase, styles.boldText]}>#1273</Text>
-          </Col>
+          <Col style={[styles.rowFlex, styles.contentOnCenter]} />
           <Col style={[styles.rowFlex, styles.contentOnCenter]}>
-            <Icon name="circle-small" size={20} color={'#000'} />
-          </Col>
-          <Col style={[styles.rowFlex, styles.contentOnStart]}>
             <Text style={[styles.textBase]}>Total </Text>
             <Text style={[styles.textBase, styles.boldText]}>
               R$ {padToCurrency(calculateSum())}
             </Text>
           </Col>
+          <Col style={[styles.rowFlex, styles.contentOnCenter]} />
         </Row>
         <Row style={styles.internalList}>
           <Col>
@@ -60,7 +54,7 @@ export default function ({productList, onPlus, onLess}: ProductListCardsProps) {
               {productList.map((obj, i) => (
                 <ProductItem
                   key={i}
-                  nome={obj.nomeProduto}
+                  nome={obj.etiqueta}
                   valor={obj.valorVenda}
                   qnt={obj.quantity}
                   indexParity={Math.abs(i % 2)}
